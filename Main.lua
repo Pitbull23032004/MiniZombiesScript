@@ -1,4 +1,4 @@
--- Painel Flutuante v2.9 - Versão Lite com Ícone de Caveira
+-- Painel Flutuante v3.0 - Versão Lite com Ícone Personalizado
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -58,7 +58,7 @@ Title.BackgroundTransparency = 1
 Title.Position = UDim2.new(0, 15, 0, 0)
 Title.Size = UDim2.new(0, 350, 1, 0)
 Title.Font = Enum.Font.GothamBold
-Title.Text = "DK PAINEL <font color='#00FF55'>VERSÃO LITE v2.9</font>"
+Title.Text = "DK PAINEL <font color='#00FF55'>VERSÃO LITE v3.0</font>"
 Title.RichText = true
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 13
@@ -108,14 +108,14 @@ local MinimizeCorner = Instance.new("UICorner")
 MinimizeCorner.CornerRadius = UDim.new(0, 6)
 MinimizeCorner.Parent = MinimizeBtn
 
--- Botão Flutuante Reabrir (Ícone de Caveira)
+-- Botão Flutuante Reabrir (Com o ID solicitado)
 local OpenButton = Instance.new("ImageButton")
 OpenButton.Name = "OpenButton"
 OpenButton.Parent = ScreenGui
 OpenButton.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 OpenButton.Position = UDim2.new(0, 20, 0.5, -25)
 OpenButton.Size = UDim2.new(0, 50, 0, 50)
-OpenButton.Image = "rbxassetid://6031097225" -- Ícone de caveira simples
+OpenButton.Image = "rbxassetid://7072718362"
 OpenButton.ImageColor3 = Color3.fromRGB(0, 255, 100)
 OpenButton.Visible = false
 
