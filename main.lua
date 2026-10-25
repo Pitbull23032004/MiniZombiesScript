@@ -1,5 +1,5 @@
 -- ==========================================================================
--- RPG DE HORA DE AVENTURA | COM2 BRUTAL V22 (Teleport Kill + Auto-Farm Raid)
+-- RPG DE HORA DE AVENTURA | COM2 BRUTAL V23 (Redesign Visual Profissional)
 -- Jogo: RPG de Hora de Aventura [BETA] - Roblox
 -- Site Oficial: https://darkgamingyt-br-pt.netlify.app/
 -- Firebase: https://darkgamingyt-1c438-default-rtdb.firebaseio.com/
@@ -14,22 +14,22 @@ local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
 
-local SCRIPT_VERSION = "AT RPG BRUTAL V22 [TELEPORT KILL + AUTO-FARM]"
+local SCRIPT_VERSION = "AT RPG BRUTAL V23 [DESIGN PROFISSIONAL]"
 local FIREBASE_BASE_URL = "https://darkgamingyt-1c438-default-rtdb.firebaseio.com"
 local FONT_MAIN = Enum.Font.Code
 
--- Paleta de Cores Estilo Hora de Aventura (Verde Floresta / Amarelo Místico & Roxo)
-local COLOR_BG = Color3.fromRGB(15, 25, 20)
-local COLOR_PANEL = Color3.fromRGB(24, 38, 30)
-local COLOR_ITEM = Color3.fromRGB(36, 56, 45)
-local COLOR_ACCENT = Color3.fromRGB(50, 205, 50)    -- Verde Aventura
-local COLOR_SECONDARY = Color3.fromRGB(255, 215, 0) -- Amarelo Jake
-local COLOR_BORDER = Color3.fromRGB(40, 90, 60)
-local COLOR_TEXT = Color3.fromRGB(240, 255, 240)
-local COLOR_SUBTEXT = Color3.fromRGB(170, 200, 180)
-local COLOR_WARN = Color3.fromRGB(255, 205, 75)
-local COLOR_OFF = Color3.fromRGB(255, 75, 75)
-local COLOR_ON = Color3.fromRGB(75, 255, 140)
+-- Paleta de Cores Estilo Aventura // Design Moderno e Profissional
+local COLOR_BG = Color3.fromRGB(12, 22, 18)
+local COLOR_PANEL = Color3.fromRGB(18, 32, 25)
+local COLOR_ITEM = Color3.fromRGB(26, 46, 36)
+local COLOR_ACCENT = Color3.fromRGB(0, 230, 118)    -- Verde Aventura Neon
+local COLOR_SECONDARY = Color3.fromRGB(255, 193, 7) -- Dourado Místico (Jake)
+local COLOR_BORDER = Color3.fromRGB(46, 125, 50)
+local COLOR_TEXT = Color3.fromRGB(236, 253, 245)
+local COLOR_SUBTEXT = Color3.fromRGB(156, 188, 172)
+local COLOR_WARN = Color3.fromRGB(255, 179, 0)
+local COLOR_OFF = Color3.fromRGB(239, 83, 80)
+local COLOR_ON = Color3.fromRGB(76, 175, 80)
 
 -- Compatibilidade de requisição HTTP para o Firebase
 local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
@@ -56,7 +56,7 @@ end)
 
 -- Limpeza de versões anteriores
 pcall(function()
-	for _, guiName in ipairs({"KD_Brutal_V16", "KD_Brutal_V17", "BRUTAL_R1_V18", "BRUTAL_R1_V19", "BRUTAL_R1_V20", "AT_RPG_V21", "AT_RPG_V22"}) do
+	for _, guiName in ipairs({"KD_Brutal_V16", "KD_Brutal_V17", "BRUTAL_R1_V18", "BRUTAL_R1_V19", "BRUTAL_R1_V20", "AT_RPG_V21", "AT_RPG_V22", "AT_RPG_V23"}) do
 		if CoreGui:FindFirstChild(guiName) then CoreGui[guiName]:Destroy() end
 		if LocalPlayer.PlayerGui:FindFirstChild(guiName) then LocalPlayer.PlayerGui[guiName]:Destroy() end
 		if gethui and gethui():FindFirstChild(guiName) then gethui()[guiName]:Destroy() end
@@ -65,7 +65,7 @@ end)
 
 -- Criação segura do ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "AT_RPG_V22"
+ScreenGui.Name = "AT_RPG_V23"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -135,7 +135,7 @@ local function makeDraggable(dragHandle, targetFrame)
 end
 
 -- ==========================================================================
--- BARRA DE CARREGAMENTO INICIAL (LOADING SCREEN)
+-- BARRA DE CARREGAMENTO INICIAL (LOADING SCREEN PROFISSIONAL)
 -- ==========================================================================
 local LoadingFrame = Instance.new("Frame", ScreenGui)
 LoadingFrame.Size = UDim2.new(0, 320, 0, 150)
@@ -144,13 +144,13 @@ LoadingFrame.BackgroundColor3 = COLOR_BG
 LoadingFrame.BorderSizePixel = 0
 LoadingFrame.ZIndex = 200
 applyStroke(LoadingFrame, COLOR_SECONDARY, 2)
-Instance.new("UICorner", LoadingFrame).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", LoadingFrame).CornerRadius = UDim.new(0, 12)
 
 local LoadTitle = Instance.new("TextLabel", LoadingFrame)
 LoadTitle.Size = UDim2.new(1, -20, 0, 24)
 LoadTitle.Position = UDim2.new(0, 10, 0, 12)
 LoadTitle.BackgroundTransparency = 1
-LoadTitle.Text = "⚔️ HORA DE AVENTURA RPG // V22"
+LoadTitle.Text = "🛡️ HORA DE AVENTURA RPG // V23"
 LoadTitle.TextColor3 = COLOR_SECONDARY
 LoadTitle.TextSize = 12
 LoadTitle.Font = FONT_MAIN
@@ -161,7 +161,7 @@ local LoadStatus = Instance.new("TextLabel", LoadingFrame)
 LoadStatus.Size = UDim2.new(1, -20, 0, 20)
 LoadStatus.Position = UDim2.new(0, 10, 0, 50)
 LoadStatus.BackgroundTransparency = 1
-LoadStatus.Text = "Carregando Teleport Kill & Auto-Farm..."
+LoadStatus.Text = "Carregando interface profissional..."
 LoadStatus.TextColor3 = COLOR_SUBTEXT
 LoadStatus.TextSize = 10
 LoadStatus.Font = FONT_MAIN
@@ -175,16 +175,16 @@ LoadBarBg.BackgroundColor3 = COLOR_PANEL
 LoadBarBg.BorderSizePixel = 0
 LoadBarBg.ZIndex = 202
 applyStroke(LoadBarBg, COLOR_BORDER, 1)
-Instance.new("UICorner", LoadBarBg).CornerRadius = UDim.new(0, 6)
+Instance.new("UICorner", LoadBarBg).CornerRadius = UDim.new(0, 8)
 
 local LoadBarFill = Instance.new("Frame", LoadBarBg)
 LoadBarFill.Size = UDim2.new(0, 0, 1, 0)
 LoadBarFill.BackgroundColor3 = COLOR_ACCENT
 LoadBarFill.BorderSizePixel = 0
 LoadBarFill.ZIndex = 203
-Instance.new("UICorner", LoadBarFill).CornerRadius = UDim.new(0, 5)
+Instance.new("UICorner", LoadBarFill).CornerRadius = UDim.new(0, 6)
 
--- Painel Principal
+-- Painel Principal Profissional
 local MainFrame = Instance.new("Frame", ScreenGui)
 MainFrame.Size = UDim2.new(0, 420, 0, 470)
 MainFrame.Position = UDim2.new(0.5, -210, 0.5, -235)
@@ -193,17 +193,17 @@ MainFrame.BorderSizePixel = 0
 MainFrame.Visible = false
 MainFrame.ZIndex = 80
 applyStroke(MainFrame, COLOR_ACCENT, 2)
-Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
 
 local FloatContainer = Instance.new("Frame", ScreenGui)
-FloatContainer.Size = UDim2.fromOffset(120, 56)
+FloatContainer.Size = UDim2.fromOffset(130, 56)
 FloatContainer.Position = UDim2.new(0.5, -340, 0.5, -235)
 FloatContainer.BackgroundColor3 = COLOR_BG
 FloatContainer.BorderSizePixel = 0
 FloatContainer.Visible = false
 FloatContainer.ZIndex = 100
 applyStroke(FloatContainer, COLOR_ACCENT, 2)
-Instance.new("UICorner", FloatContainer).CornerRadius = UDim.new(0, 8)
+Instance.new("UICorner", FloatContainer).CornerRadius = UDim.new(0, 10)
 
 local FpsLabel = Instance.new("TextLabel", FloatContainer)
 FpsLabel.Size = UDim2.new(1, 0, 0, 18)
@@ -221,13 +221,13 @@ FloatBtn.Size = UDim2.new(1, -6, 0, 30)
 FloatBtn.Position = UDim2.new(0, 3, 0, 22)
 FloatBtn.BackgroundColor3 = COLOR_PANEL
 FloatBtn.BorderSizePixel = 0
-FloatBtn.Text = "⚔️ AT V22"
+FloatBtn.Text = "⚔️ MENU V23"
 FloatBtn.TextColor3 = COLOR_ACCENT
 FloatBtn.TextSize = 11
 FloatBtn.Font = FONT_MAIN
 FloatBtn.ZIndex = 101
 applyStroke(FloatBtn, COLOR_BORDER, 1)
-Instance.new("UICorner", FloatBtn).CornerRadius = UDim.new(0, 6)
+Instance.new("UICorner", FloatBtn).CornerRadius = UDim.new(0, 8)
 
 makeDraggable(FloatBtn, FloatContainer)
 
@@ -236,8 +236,8 @@ task.spawn(function()
 	local stages = {
 		{pct = 0.30, txt = "Mapeando o Mundo de Ooo... [30%]"},
 		{pct = 0.65, txt = "Sincronizando Firebase Database... [65%]"},
-		{pct = 0.90, txt = "Ativando Auto-Farm & Teleport Kill... [90%]"},
-		{pct = 1.00, txt = "Pronto! Bem-vindo ao AT V22 [100%]"}
+		{pct = 0.90, txt = "Aplicando novo design visual... [90%]"},
+		{pct = 1.00, txt = "Pronto! AT V23 Carregado [100%]"}
 	}
 	for _, st in ipairs(stages) do
 		LoadStatus.Text = st.txt
@@ -297,7 +297,7 @@ end)
 
 FloatContainer:GetPropertyChangedSignal("Position"):Connect(function()
 	local fPos = FloatContainer.Position
-	MainFrame.Position = UDim2.new(fPos.X.Scale, fPos.X.Offset + 128, fPos.Y.Scale, fPos.Y.Offset)
+	MainFrame.Position = UDim2.new(fPos.X.Scale, fPos.X.Offset + 138, fPos.Y.Scale, fPos.Y.Offset)
 end)
 
 FloatBtn.MouseButton1Click:Connect(function()
@@ -312,20 +312,20 @@ TopBar.BackgroundColor3 = COLOR_PANEL
 TopBar.BorderSizePixel = 0
 TopBar.ZIndex = 82
 applyStroke(TopBar, COLOR_BORDER, 1)
-Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 12)
 
 local TitleLabel = Instance.new("TextLabel", TopBar)
 TitleLabel.Size = UDim2.new(1, -20, 1, 0)
 TitleLabel.Position = UDim2.new(0, 12, 0, 0)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "⚔️ HORA DE AVENTURA // @wallacy_rtx"
-TitleLabel.TextColor3 = COLOR_ACCENT
+TitleLabel.Text = "🛡️ HORA DE AVENTURA // @wallacy_rtx"
+TitleLabel.TextColor3 = COLOR_SECONDARY
 TitleLabel.TextSize = 10
 TitleLabel.Font = FONT_MAIN
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 TitleLabel.ZIndex = 83
 
--- Abas: [BYPASS] | [BOSS ESP] | [COMBATE] | [GERAL] | [SITE & DC]
+-- Abas do Menu
 local TabHeader = Instance.new("Frame", MainFrame)
 TabHeader.Size = UDim2.new(1, -20, 0, 32)
 TabHeader.Position = UDim2.new(0, 10, 0, 48)
@@ -333,7 +333,7 @@ TabHeader.BackgroundColor3 = COLOR_PANEL
 TabHeader.BorderSizePixel = 0
 TabHeader.ZIndex = 82
 applyStroke(TabHeader, COLOR_BORDER, 1)
-Instance.new("UICorner", TabHeader).CornerRadius = UDim.new(0, 6)
+Instance.new("UICorner", TabHeader).CornerRadius = UDim.new(0, 8)
 
 local function createTabBtn(name, posX, active)
 	local btn = Instance.new("TextButton", TabHeader)
@@ -341,12 +341,12 @@ local function createTabBtn(name, posX, active)
 	btn.Position = UDim2.new(posX, 0, 0.1, 0)
 	btn.BackgroundColor3 = active and COLOR_SECONDARY or COLOR_ITEM
 	btn.BorderSizePixel = 0
-	btn.TextColor3 = active and COLOR_TEXT or COLOR_SUBTEXT
+	btn.TextColor3 = active and COLOR_BG or COLOR_TEXT
 	btn.TextSize = 8
 	btn.Font = FONT_MAIN
 	btn.Text = name
 	btn.ZIndex = 83
-	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
 	applyStroke(btn, active and COLOR_ACCENT or COLOR_BORDER, 1)
 	return btn
 end
@@ -355,7 +355,7 @@ local btnBypass = createTabBtn("BYPASS", 0.01, true)
 local btnEsp = createTabBtn("BOSS ESP", 0.21, false)
 local btnAim = createTabBtn("COMBATE", 0.41, false)
 local btnGeral = createTabBtn("GERAL", 0.61, false)
-local btnSocial = createTabBtn("SITE & DC", 0.81, false)
+local btnSocial = createTabBtn("SOCIAL", 0.81, false)
 
 local ContentContainer = Instance.new("Frame", MainFrame)
 ContentContainer.Size = UDim2.new(1, -20, 1, -114)
@@ -412,7 +412,7 @@ local function selectTab(selected)
 	for _, t in ipairs(tabs) do
 		local isSel = (t.panel == selected)
 		t.btn.BackgroundColor3 = isSel and COLOR_SECONDARY or COLOR_ITEM
-		t.btn.TextColor3 = isSel and COLOR_TEXT or COLOR_SUBTEXT
+		t.btn.TextColor3 = isSel and COLOR_BG or COLOR_TEXT
 		local st = t.btn:FindFirstChildOfClass("UIStroke")
 		if st then st.Color = isSel and COLOR_ACCENT or COLOR_BORDER end
 	end
@@ -424,7 +424,7 @@ btnAim.MouseButton1Click:Connect(function() selectTab(panelAim) end)
 btnGeral.MouseButton1Click:Connect(function() selectTab(panelGeral) end)
 btnSocial.MouseButton1Click:Connect(function() selectTab(panelSocial) end)
 
--- Rodapé com créditos
+-- Rodapé Estilizado
 local FooterBar = Instance.new("Frame", MainFrame)
 FooterBar.Size = UDim2.new(1, -20, 0, 24)
 FooterBar.Position = UDim2.new(0, 10, 1, -28)
@@ -432,7 +432,7 @@ FooterBar.BackgroundColor3 = COLOR_PANEL
 FooterBar.BorderSizePixel = 0
 FooterBar.ZIndex = 82
 applyStroke(FooterBar, COLOR_BORDER, 1)
-Instance.new("UICorner", FooterBar).CornerRadius = UDim.new(0, 6)
+Instance.new("UICorner", FooterBar).CornerRadius = UDim.new(0, 8)
 
 local CreditLabel = Instance.new("TextLabel", FooterBar)
 CreditLabel.Size = UDim2.new(1, 0, 1, 0)
@@ -451,7 +451,7 @@ local function createToggle(parent, name, callback, desc, isRisky)
 	row.BackgroundColor3 = COLOR_PANEL
 	row.BorderSizePixel = 0
 	row.ZIndex = 83
-	Instance.new("UICorner", row).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", row).CornerRadius = UDim.new(0, 8)
 	applyStroke(row, isRisky and COLOR_WARN or COLOR_BORDER, 1)
 	
 	local label = Instance.new("TextLabel", row)
@@ -488,7 +488,7 @@ local function createToggle(parent, name, callback, desc, isRisky)
 	statusBtn.TextSize = 10
 	statusBtn.Font = FONT_MAIN
 	statusBtn.ZIndex = 84
-	Instance.new("UICorner", statusBtn).CornerRadius = UDim.new(0, 4)
+	Instance.new("UICorner", statusBtn).CornerRadius = UDim.new(0, 6)
 	local btnStroke = applyStroke(statusBtn, COLOR_OFF, 1)
 	
 	local state = false
@@ -519,7 +519,7 @@ local function createSocialCard(parent, title, url, desc)
 	card.BackgroundColor3 = COLOR_PANEL
 	card.BorderSizePixel = 0
 	card.ZIndex = 83
-	Instance.new("UICorner", card).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", card).CornerRadius = UDim.new(0, 8)
 	applyStroke(card, COLOR_SECONDARY, 1)
 
 	local titleLbl = Instance.new("TextLabel", card)
@@ -554,7 +554,7 @@ local function createSocialCard(parent, title, url, desc)
 	copyBtn.TextSize = 10
 	copyBtn.Font = FONT_MAIN
 	copyBtn.ZIndex = 84
-	Instance.new("UICorner", copyBtn).CornerRadius = UDim.new(0, 4)
+	Instance.new("UICorner", copyBtn).CornerRadius = UDim.new(0, 6)
 	applyStroke(copyBtn, COLOR_ACCENT, 1)
 
 	copyBtn.MouseButton1Click:Connect(function()
@@ -573,7 +573,7 @@ createSocialCard(panelSocial, "📺 Canal do YouTube (@wallacy_rtx)", "https://y
 createSocialCard(panelSocial, "💬 Servidor do Discord Oficial", "https://discord.com/invite/vzMRuAs6gt", "Entre na comunidade para suporte e novidades!")
 
 -- ==========================================================================
--- LÓGICA V22 (TELEPORT KILL, AUTO-FARM, FLY, BOSS KILL, COOLDOWN ZERO)
+-- LÓGICA V23 (MANTIDA 100% INTACTA)
 -- ==========================================================================
 _G.AT_Bypass = false
 _G.AT_EspHighlight = false
@@ -658,7 +658,7 @@ local function createTeleportSection(parent)
 	row.BackgroundColor3 = COLOR_PANEL
 	row.BorderSizePixel = 0
 	row.ZIndex = 83
-	Instance.new("UICorner", row).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", row).CornerRadius = UDim.new(0, 8)
 	applyStroke(row, COLOR_ACCENT, 1)
 
 	local label = Instance.new("TextLabel", row)
@@ -693,7 +693,7 @@ local function createTeleportSection(parent)
 	chooseBtn.TextSize = 9
 	chooseBtn.Font = FONT_MAIN
 	chooseBtn.ZIndex = 84
-	Instance.new("UICorner", chooseBtn).CornerRadius = UDim.new(0, 4)
+	Instance.new("UICorner", chooseBtn).CornerRadius = UDim.new(0, 6)
 	applyStroke(chooseBtn, COLOR_BORDER, 1)
 
 	local tpBtn = Instance.new("TextButton", row)
@@ -706,7 +706,7 @@ local function createTeleportSection(parent)
 	tpBtn.TextSize = 9
 	tpBtn.Font = FONT_MAIN
 	tpBtn.ZIndex = 84
-	Instance.new("UICorner", tpBtn).CornerRadius = UDim.new(0, 4)
+	Instance.new("UICorner", tpBtn).CornerRadius = UDim.new(0, 6)
 	applyStroke(tpBtn, COLOR_ON, 1)
 
 	local targetsListCache = {}
@@ -902,7 +902,6 @@ task.spawn(function()
 						end
 					end
 					if not targetFound then
-						-- Se não houver mobs por perto, aguarda um instante
 						task.wait(1)
 					end
 				end
@@ -1154,4 +1153,4 @@ createToggle(panelGeral, "Full Bright Visão Clara", function(enabled)
 	_G.AT_FullBright = enabled
 end, "Ilumina o mapa e remove sombras")
 
-print("[AT RPG BRUTAL V22] Carregado com Sucesso! Teleport Kill e Auto-Farm ativados.")
+print("[AT RPG BRUTAL V23] Carregado com Sucesso! Novo Design Profissional Aplicado.")
