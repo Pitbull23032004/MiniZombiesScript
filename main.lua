@@ -1,6 +1,6 @@
 -- ==========================================================================
--- RPG DE HORA DE AVENTURA | COM2 BRUTAL V23 (Redesign Visual Profissional)
--- Jogo: RPG de Hora de Aventura [BETA] - Roblox
+-- RPG DE HORA DE AVENTURA | COM2 BRUTAL V23 [DESIGN PROFISSIONAL]
+-- Jogo: RPG de Hora de Aventura [BETA] - Roblox[cite: 5]
 -- Site Oficial: https://darkgamingyt-br-pt.netlify.app/
 -- Firebase: https://darkgamingyt-1c438-default-rtdb.firebaseio.com/
 -- Canal: https://youtube.com/@wallacy_rtx | Discord: https://discord.com/invite/vzMRuAs6gt
