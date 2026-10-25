@@ -1,5 +1,5 @@
 -- ==========================================================================
--- RPG DE HORA DE AVENTURA | COM2 BRUTAL V21 (Ajustado para Oh My Glob Games)
+-- RPG DE HORA DE AVENTURA | COM2 BRUTAL V22 (Teleport Kill + Auto-Farm Raid)
 -- Jogo: RPG de Hora de Aventura [BETA] - Roblox
 -- Site Oficial: https://darkgamingyt-br-pt.netlify.app/
 -- Firebase: https://darkgamingyt-1c438-default-rtdb.firebaseio.com/
@@ -14,7 +14,7 @@ local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
 
-local SCRIPT_VERSION = "AT RPG BRUTAL V21 [BOSS KILL + COOLDOWN ZERO]"
+local SCRIPT_VERSION = "AT RPG BRUTAL V22 [TELEPORT KILL + AUTO-FARM]"
 local FIREBASE_BASE_URL = "https://darkgamingyt-1c438-default-rtdb.firebaseio.com"
 local FONT_MAIN = Enum.Font.Code
 
@@ -56,7 +56,7 @@ end)
 
 -- Limpeza de versões anteriores
 pcall(function()
-	for _, guiName in ipairs({"KD_Brutal_V16", "KD_Brutal_V17", "BRUTAL_R1_V18", "BRUTAL_R1_V19", "BRUTAL_R1_V20", "AT_RPG_V21"}) do
+	for _, guiName in ipairs({"KD_Brutal_V16", "KD_Brutal_V17", "BRUTAL_R1_V18", "BRUTAL_R1_V19", "BRUTAL_R1_V20", "AT_RPG_V21", "AT_RPG_V22"}) do
 		if CoreGui:FindFirstChild(guiName) then CoreGui[guiName]:Destroy() end
 		if LocalPlayer.PlayerGui:FindFirstChild(guiName) then LocalPlayer.PlayerGui[guiName]:Destroy() end
 		if gethui and gethui():FindFirstChild(guiName) then gethui()[guiName]:Destroy() end
@@ -65,7 +65,7 @@ end)
 
 -- Criação segura do ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "AT_RPG_V21"
+ScreenGui.Name = "AT_RPG_V22"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -150,7 +150,7 @@ local LoadTitle = Instance.new("TextLabel", LoadingFrame)
 LoadTitle.Size = UDim2.new(1, -20, 0, 24)
 LoadTitle.Position = UDim2.new(0, 10, 0, 12)
 LoadTitle.BackgroundTransparency = 1
-LoadTitle.Text = "⚔️ HORA DE AVENTURA RPG // V21"
+LoadTitle.Text = "⚔️ HORA DE AVENTURA RPG // V22"
 LoadTitle.TextColor3 = COLOR_SECONDARY
 LoadTitle.TextSize = 12
 LoadTitle.Font = FONT_MAIN
@@ -161,7 +161,7 @@ local LoadStatus = Instance.new("TextLabel", LoadingFrame)
 LoadStatus.Size = UDim2.new(1, -20, 0, 20)
 LoadStatus.Position = UDim2.new(0, 10, 0, 50)
 LoadStatus.BackgroundTransparency = 1
-LoadStatus.Text = "Carregando Modificadores de RPG..."
+LoadStatus.Text = "Carregando Teleport Kill & Auto-Farm..."
 LoadStatus.TextColor3 = COLOR_SUBTEXT
 LoadStatus.TextSize = 10
 LoadStatus.Font = FONT_MAIN
@@ -221,7 +221,7 @@ FloatBtn.Size = UDim2.new(1, -6, 0, 30)
 FloatBtn.Position = UDim2.new(0, 3, 0, 22)
 FloatBtn.BackgroundColor3 = COLOR_PANEL
 FloatBtn.BorderSizePixel = 0
-FloatBtn.Text = "⚔️ AT V21"
+FloatBtn.Text = "⚔️ AT V22"
 FloatBtn.TextColor3 = COLOR_ACCENT
 FloatBtn.TextSize = 11
 FloatBtn.Font = FONT_MAIN
@@ -236,8 +236,8 @@ task.spawn(function()
 	local stages = {
 		{pct = 0.30, txt = "Mapeando o Mundo de Ooo... [30%]"},
 		{pct = 0.65, txt = "Sincronizando Firebase Database... [65%]"},
-		{pct = 0.90, txt = "Ativando Auto-Kill de Chefes & Cooldown Zero... [90%]"},
-		{pct = 1.00, txt = "Pronto! Bem-vindo ao AT V21 [100%]"}
+		{pct = 0.90, txt = "Ativando Auto-Farm & Teleport Kill... [90%]"},
+		{pct = 1.00, txt = "Pronto! Bem-vindo ao AT V22 [100%]"}
 	}
 	for _, st in ipairs(stages) do
 		LoadStatus.Text = st.txt
@@ -325,7 +325,7 @@ TitleLabel.Font = FONT_MAIN
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 TitleLabel.ZIndex = 83
 
--- Abas: [BYPASS] | [BOSS & ESP] | [COMBATE] | [GERAL] | [SITE & DC]
+-- Abas: [BYPASS] | [BOSS ESP] | [COMBATE] | [GERAL] | [SITE & DC]
 local TabHeader = Instance.new("Frame", MainFrame)
 TabHeader.Size = UDim2.new(1, -20, 0, 32)
 TabHeader.Position = UDim2.new(0, 10, 0, 48)
@@ -573,7 +573,7 @@ createSocialCard(panelSocial, "📺 Canal do YouTube (@wallacy_rtx)", "https://y
 createSocialCard(panelSocial, "💬 Servidor do Discord Oficial", "https://discord.com/invite/vzMRuAs6gt", "Entre na comunidade para suporte e novidades!")
 
 -- ==========================================================================
--- LÓGICA V21 (FLY, BOSS KILL, COOLDOWN ZERO, ESP GLOBAL, TELEPORT)
+-- LÓGICA V22 (TELEPORT KILL, AUTO-FARM, FLY, BOSS KILL, COOLDOWN ZERO)
 -- ==========================================================================
 _G.AT_Bypass = false
 _G.AT_EspHighlight = false
@@ -582,6 +582,8 @@ _G.AT_EspVidaBeta = false
 _G.AT_EspLine = false
 _G.AT_EspDistance = false
 _G.AT_BossKill = false
+_G.AT_TeleportKill = false
+_G.AT_AutoFarm = false
 _G.AT_SpeedOn = false
 _G.AT_WallHack = false
 _G.AT_NoCooldown = false
@@ -647,7 +649,7 @@ local function stopFly()
 	if flyBg then flyBg:Destroy() end
 end
 
--- Sistema de Escolher Alvo para Teleporte (Jogadores ou Chefes)
+-- Sistema de Escolher Alvo para Teleporte
 local selectedTargetPlayer = nil
 
 local function createTeleportSection(parent)
@@ -713,13 +715,11 @@ local function createTeleportSection(parent)
 	chooseBtn.MouseButton1Click:Connect(function()
 		playClickSound()
 		targetsListCache = {}
-		-- Coleta jogadores e procura por inimigos/chefes no workspace
 		for _, plr in ipairs(Players:GetPlayers()) do
 			if plr ~= LocalPlayer then
 				table.insert(targetsListCache, plr)
 			end
 		end
-		-- Procura modelos de inimigos/chefes (ex: Ogro) no workspace
 		pcall(function()
 			for _, obj in ipairs(workspace:GetDescendants()) do
 				if obj:IsA("Model") and obj:FindFirstChildOfClass("Humanoid") then
@@ -810,7 +810,7 @@ RunService.Stepped:Connect(function()
 	end
 end)
 
--- Modificadores de RPG (Cooldown Zero / Skills Infinitas e Godmode de PV)
+-- Modificadores de RPG
 RunService.Heartbeat:Connect(function()
 	pcall(function()
 		if _G.AT_NoCooldown then
@@ -830,7 +830,7 @@ RunService.Heartbeat:Connect(function()
 	end)
 end)
 
--- Auto-Kill / Boss Kill Pro (Destrói chefes e monstros no mapa instantaneamente)
+-- Auto-Kill / Boss Kill Pro
 task.spawn(function()
 	while task.wait(0.05) do
 		if _G.AT_BossKill then
@@ -838,7 +838,6 @@ task.spawn(function()
 				local char = LocalPlayer.Character
 				local root = char and char:FindFirstChild("HumanoidRootPart")
 				if root then
-					-- Varre o workspace por qualquer Humanoid inimigo (Mobs e Chefes como o Ogro)
 					for _, obj in ipairs(workspace:GetDescendants()) do
 						if obj:IsA("Model") and obj ~= char then
 							local hum = obj:FindFirstChildOfClass("Humanoid")
@@ -849,6 +848,62 @@ task.spawn(function()
 								end
 							end
 						end
+					end
+				end
+			end)
+		end
+	end
+end)
+
+-- Teleport Kill nos Mobs / Raid
+task.spawn(function()
+	while task.wait(0.3) do
+		if _G.AT_TeleportKill then
+			pcall(function()
+				local char = LocalPlayer.Character
+				local root = char and char:FindFirstChild("HumanoidRootPart")
+				if root then
+					for _, obj in ipairs(workspace:GetDescendants()) do
+						if obj:IsA("Model") and obj ~= char then
+							local hum = obj:FindFirstChildOfClass("Humanoid")
+							local eRoot = obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChildWhichIsA("BasePart")
+							if hum and eRoot and hum.Health > 0 and not Players:GetPlayerFromCharacter(obj) then
+								root.CFrame = eRoot.CFrame + Vector3.new(0, 3, 0)
+								hum.Health = 0
+								task.wait(0.1)
+							end
+						end
+					end
+				end
+			end)
+		end
+	end
+end)
+
+-- Auto-Farm Inteligente para Mobs e Raids
+task.spawn(function()
+	while task.wait(0.2) do
+		if _G.AT_AutoFarm then
+			pcall(function()
+				local char = LocalPlayer.Character
+				local root = char and char:FindFirstChild("HumanoidRootPart")
+				if root then
+					local targetFound = false
+					for _, obj in ipairs(workspace:GetDescendants()) do
+						if obj:IsA("Model") and obj ~= char then
+							local hum = obj:FindFirstChildOfClass("Humanoid")
+							local eRoot = obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChildWhichIsA("BasePart")
+							if hum and eRoot and hum.Health > 0 and not Players:GetPlayerFromCharacter(obj) then
+								targetFound = true
+								root.CFrame = eRoot.CFrame + Vector3.new(0, 4, 0)
+								hum.Health = 0
+								break
+							end
+						end
+					end
+					if not targetFound then
+						-- Se não houver mobs por perto, aguarda um instante
+						task.wait(1)
 					end
 				end
 			end)
@@ -877,7 +932,7 @@ local function hideAllLines(fromIndex)
 	end
 end
 
--- ESP Boss & Inimigos Globais (Highlights em Mobs e Jogadores)
+-- ESP Boss & Inimigos Globais
 task.spawn(function()
 	while task.wait(0.3) do
 		pcall(function()
@@ -1068,6 +1123,14 @@ createToggle(panelAim, "Boss Auto-Kill Pro (Alcance 800m)", function(enabled)
 	_G.AT_BossKill = enabled
 end, "Elimina chefes e inimigos próximos instantaneamente", true)
 
+createToggle(panelAim, "Teleport Kill (Mobs & Raid)", function(enabled)
+	_G.AT_TeleportKill = enabled
+end, "Teleporta para cima dos monstros eliminando-os instantaneamente", true)
+
+createToggle(panelAim, "Auto-Farm Inteligente (M/Raid)", function(enabled)
+	_G.AT_AutoFarm = enabled
+end, "Procura, teleporta e farma monstros automaticamente no mapa", true)
+
 createToggle(panelGeral, "Speed Hack Aventura", function(enabled)
 	_G.AT_SpeedOn = enabled
 	if not enabled then
@@ -1091,4 +1154,4 @@ createToggle(panelGeral, "Full Bright Visão Clara", function(enabled)
 	_G.AT_FullBright = enabled
 end, "Ilumina o mapa e remove sombras")
 
-print("[AT RPG BRUTAL V21] Carregado com Sucesso! Ajustado para o Hora de Aventura RPG.")
+print("[AT RPG BRUTAL V22] Carregado com Sucesso! Teleport Kill e Auto-Farm ativados.")
